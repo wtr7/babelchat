@@ -1,5 +1,3 @@
-process.env.NODE_ENV = 'development';
-
 import http from 'http';
 import './library/config/db_init.js';
 import fs from 'fs';
@@ -14,8 +12,11 @@ express_config(app);
 routes_config(app);
 
 const port = process.env.PORT || 3000;
+const ip = '127.0.0.1';
+const env = process.env.NODE_ENV || 'development';
+
 const server = http.createServer(app).listen(port, function() {
-	console.log(`[${process.env.NODE_ENV}]:${port}`);
+	console.log(`Running in [${env}] on ${ip}:${port}`);
 });
 
 const io = socketio.listen(server);
