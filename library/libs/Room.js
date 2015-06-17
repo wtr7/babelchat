@@ -43,7 +43,7 @@ export default class Room {
 
         var person = null;
         for (var id of this.people) {
-            if (id === socketID) person = id;
+            if (id === socketID) return id;
         }
         return person;
     }
