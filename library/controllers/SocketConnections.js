@@ -56,6 +56,7 @@ export default class SocketConnections {
 			});
 
 			socket.on('disconnect', () => {
+				// if no name is provided yet and so isn't in a room yet
 				if (!_.find(this.sockets, socket)) return console.log('No name provided yet');
 
 				this.io.sockets.emit('update', `${this.people[socket.id].name} has disconnected from the server.`);
