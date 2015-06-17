@@ -48,6 +48,13 @@ export default class SocketConnections {
 				}
 			});
 
+			socket.on('typing', data => {
+				if (_.contains(this.rooms[socket.room].people, socket.id)) {
+					// send to all in room except current socket
+					socket.broadcast.to(socket.room).emit('isTyping', {isTyping: data, person: this.people[socket.id].name});
+				}
+			});
+
 			socket.on('disconnect', () => {
 				if (!_.find(this.sockets, socket)) return console.log('No name provided yet');
 
