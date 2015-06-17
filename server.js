@@ -9,16 +9,16 @@ import express_config from './library/config/express';
 import routes_config from './library/routes';
 import SocketConnections from './library/controllers/SocketConnections.js';
 
-let app = express();
+const app = express();
 express_config(app);
 routes_config(app);
 
-let port = process.env.PORT || 3000;
-let server = http.createServer(app).listen(port, function() {
+const port = process.env.PORT || 3000;
+const server = http.createServer(app).listen(port, function() {
 	console.log(`[${process.env.NODE_ENV}]:${port}`);
 });
 
-let io = socketio.listen(server);
-let sockets = new SocketConnections(io).listen();
+const io = socketio.listen(server);
+const sockets = new SocketConnections(io).listen();
 
 export default app;
