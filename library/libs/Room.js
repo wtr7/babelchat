@@ -25,7 +25,22 @@ export default class Room {
     }
 
     getPerson(socketID) {
-        console.log(this.people, socketID);
+        /* we don't have to do a for loop compared with to length of an array
+        now we can use 'for of' loop */
+
+        // var person = null;
+        // for(var i = 0; i < this.people.length; i++) {
+        //     if(this.people[i] == socketID) {
+        //         person = this.people[i];
+        //         break;
+        //     }
+        // }
+        // return person;
+
+        var person = null;
+        for (var id of this.people) {
+            if (id === socketID) person = id;
+        }
         return person;
     }
 
