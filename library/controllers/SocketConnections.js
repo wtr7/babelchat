@@ -18,6 +18,7 @@ export default class SocketConnections {
 	}
 
   	listen() {
+  		// arrows are a shorthand for functions, except arraws handle 'this' the same as their surrounding code
     	this.io.sockets.on('connection', socket => {
     		socket.on('joinserver', (name, device) => {
 	    		this.people[socket.id] = {'name' : name, 'device': device};
