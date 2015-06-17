@@ -139,7 +139,7 @@ $(document).ready(function() {
 
   $("#msg").keypress(function(e){
     if (e.which !== 13) {
-      if (typing === false && myRoomID !== null && $("#msg").is(":focus")) {
+      if (!typing && $("#msg").is(":focus")) {
         typing = true;
         socket.emit("typing", true);
       } else {
@@ -160,8 +160,6 @@ $(document).ready(function() {
     }
   });
 
-
-/*
   $("#msg").keypress(function(){
     if ($("#msg").is(":focus")) {
       if (myRoomID !== null) {
@@ -171,18 +169,6 @@ $(document).ready(function() {
       $("#keyboard").remove();
     }
   });
-
-  socket.on("isTyping", function(data) {
-    if (data.typing) {
-      if ($("#keyboard").length === 0)
-        $("#updates").append("<li id='keyboard'><span class='text-muted'><i class='fa fa-keyboard-o'></i>" + data.person + " is typing.</li>");
-    } else {
-      socket.emit("clearMessage");
-      $("#keyboard").remove();
-    }
-    console.log(data);
-  });
-*/
 
   $("#showCreateRoom").click(function() {
     $("#createRoomForm").toggle();
@@ -225,60 +211,6 @@ $(document).ready(function() {
     socket.emit("leaveRoom", roomID);
     $("#createRoom").show();
   });
-
-  $("#people").on('click', '.whisper', function() {
-    var name = $(this).siblings("span").text();
-    $("#msg").val("w:"+name+":");
-    $("#msg").focus();
-  });
-/*
-  $("#whisper").change(function() {
-    var peopleOnline = [];
-    if ($("#whisper").prop('checked')) {
-      console.log("checked, going to get the peeps");
-      //peopleOnline = ["Tamas", "Steve", "George"];
-      socket.emit("getOnlinePeople", function(data) {
-        $.each(data.people, function(clientid, obj) {
-          console.log(obj.name);
-          peopleOnline.push(obj.name);
-        });
-        console.log("adding typeahead")
-        $("#msg").typeahead({
-            local: peopleOnline
-          }).each(function() {
-            if ($(this).hasClass('input-lg'))
-              $(this).prev('.tt-hint').addClass('hint-lg');
-        });
-      });
-
-      console.log(peopleOnline);
-    } else {
-      console.log('remove typeahead');
-      $('#msg').typeahead('destroy');
-    }
-  });
-  // $( "#whisper" ).change(function() {
-  //   var peopleOnline = [];
-  //   console.log($("#whisper").prop('checked'));
-  //   if ($("#whisper").prop('checked')) {
-  //     console.log("checked, going to get the peeps");
-  //     peopleOnline = ["Tamas", "Steve", "George"];
-  //     // socket.emit("getOnlinePeople", function(data) {
-  //     //   $.each(data.people, function(clientid, obj) {
-  //     //     console.log(obj.name);
-  //     //     peopleOnline.push(obj.name);
-  //     //   });
-  //     // });
-  //     //console.log(peopleOnline);
-  //   }
-  //   $("#msg").typeahead({
-  //         local: peopleOnline
-  //       }).each(function() {
-  //         if ($(this).hasClass('input-lg'))
-  //           $(this).prev('.tt-hint').addClass('hint-lg');
-  //       });
-  // });
-*/
 
 //socket-y stuff
 socket.on("exists", function(data) {
@@ -332,8 +264,6 @@ socket.on("history", function(data) {
   });
 
   socket.on("update-people", function(data){
-    console.log(data);
-    //var peopleOnline = [];
     $("#people").empty();
     $('#people').append("<li class=\"list-group-item active\">People online <span class=\"badge\">"+data.count+"</span></li>");
     $.each(data.people, function(a, obj) {
@@ -343,18 +273,7 @@ socket.on("history", function(data) {
         html = "<img class=\"flag flag-"+obj.country+"\"/>";
       }
       $('#people').append("<li class=\"list-group-item\"><span>" + obj.name + "</span> <i class=\"fa fa-"+obj.device+"\"></i> " + html + "</li>");
-      //peopleOnline.push(obj.name);
     });
-
-    /*var whisper = $("#whisper").prop('checked');
-    if (whisper) {
-      $("#msg").typeahead({
-          local: peopleOnline
-      }).each(function() {
-         if ($(this).hasClass('input-lg'))
-              $(this).prev('.tt-hint').addClass('hint-lg');
-      });
-    }*/
   });
 
   socket.on("chat", function(msTime, person, msg) {
@@ -363,15 +282,6 @@ socket.on("history", function(data) {
      $("#"+person.name+"").remove();
      clearTimeout(timeout);
      timeout = setTimeout(timeoutFunction, 0);
-  });
-
-  socket.on("whisper", function(msTime, person, msg) {
-    if (person.name === "You") {
-      s = "whisper"
-    } else {
-      s = "whispers"
-    }
-    $("#msgs").append("<li><strong><span class='text-muted'>" + timeFormat(msTime) + person.name + "</span></strong> "+s+": " + msg + "</li>");
   });
 
   socket.on("roomList", function(data) {
