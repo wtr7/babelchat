@@ -60,6 +60,8 @@ export default class SocketConnections {
 
 				delete this.people[socket.id];
 				this.io.sockets.emit('update-people', {people: this.people, count: _.size(this.people)});
+
+				// let is, compared to var, block scoped and not function scoped
 				let o = _.findWhere(this.sockets, {'id': socket.id});
 				this.sockets = _.without(this.sockets, o);
 			});
