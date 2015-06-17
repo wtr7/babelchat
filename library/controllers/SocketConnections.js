@@ -4,7 +4,9 @@ import _ from 'lodash';
 export default class SocketConnections {
   	constructor(io) {
   		// set general defaultRoom first time
-  		this.defaultRoom = new Room('generalRoom');
+  		this.defaultRoom = new Room();
+  		/* in the future we can use 'Map' instead of an object literal
+  		then we can use features like remove and clear*/
   		this.rooms = {
   			'generalRoom': this.defaultRoom
   		};

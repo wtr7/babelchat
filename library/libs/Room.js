@@ -1,9 +1,12 @@
 import _ from 'lodash';
 
 export default class Room {
-    constructor(name, id, owner) {
-        this.name = name || 'generalRoom';
-        this.owner = owner || 'general';
+    // you can add default values to the params
+    constructor(name = 'generalRoom', owner = 'general') {
+        this.name = name;
+        this.owner = owner;
+        /* in the future we can use 'Set' instead of an Array
+        then we can use features like remove and clear*/
         this.people = [];
         this.peopleLimit = 4;
         this.status = 'available';
