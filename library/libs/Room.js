@@ -24,6 +24,10 @@ export default class Room {
         _.remove(this.people, socketID);
     }
 
+    clearRoom() {
+        this.people = [];
+    }
+
     getPerson(socketID) {
         /* we don't have to do a for loop compared with to length of an array
         now we can use 'for of' loop */
